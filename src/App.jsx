@@ -1,34 +1,39 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { getAccessTokenFromURL } from "./spotify";
+import axios from "axios";
 import Login from "./components/Login";
+import Player from "./components/Player";
+import { GlobalContext } from "./context/GlobalContext";
 
 function App() {
-  const [token, setToken] = useState(null);
-  const [userProfile, setUserProfile] = useState("");
+  const { state, setUser, setToken } = useContext(GlobalContext);
 
-  async function fetchUserSpotifyProfile(_token) {
-    const result = await fetch("https://api.spotify.com/v1/me", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${_token}` },
-    });
-    return await result.json();
-  }
+  let fetchUserSpotifyProfile = async (_token) => {
+    try {
+      const result = await axios.get("https://api.spotify.com/v1/me", {
+        headers: { Authorization: `Bearer ${_token}` },
+      });
+      let data = await result.data;
+      // dispatching action to set user data in the global context
+      setUser(data.display_name);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  console.log(userProfile, "userprofile");
   useEffect(() => {
     const _token = getAccessTokenFromURL();
     window.location.hash = "";
-    if (_token) {
-      setToken(_token);
-      fetchUserSpotifyProfile(_token).then((res) => setUserProfile(res));
-    }
-  }, [token]);
 
-  return (
-    <>
-      <Login />
-    </>
-  );
+    if (_token) {
+      // dispatching action to set token in the global context
+      setToken(_token);
+      fetchUserSpotifyProfile(_token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <>{state.token ? <Player /> : <Login />}</>;
 }
 
 export default App;
