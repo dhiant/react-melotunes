@@ -6,7 +6,8 @@ const initialState = {
   playLists: [],
   playing: false,
   item: null,
-  token: null,
+  token:
+    "BQD--BO_67xtv46dbQRbbW08JaoK2tiu6PaVf1FDnEj56Kkysf2R0g2xqGwSRXI9pevtVeBObL-dYKyMGEpw9-qX2c77vZVQaMN1dYqNc9AUOsS2WSDDINLY6mCA_8Sj9actfryTI_KhFk2w3hbJ1fR4CHbZfGNCfd_WSEHPV4FN2jHMXlloL0XKyRnuC4ovFv_xlf2IAQnPsT3sQE3jC9jsxhODD_l8iUw",
 };
 
 export const GlobalContext = createContext(initialState);

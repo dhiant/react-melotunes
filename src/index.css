@@ -8,6 +8,10 @@
 }
 
 :root {
-  --c-primary: #000000;
+  /* body color */
+  /* --c-primary: #121212; */
+  --c-primary: #5b5773;
+  /* footer color */
+  --c-secondary: #181818;
   --c-green: #1db954;
 }
