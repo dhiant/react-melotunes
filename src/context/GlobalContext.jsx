@@ -30,8 +30,14 @@ export const GlobalContextProvider = ({ children }) => {
     });
   }
 
+  function setPlayLists(playLists) {
+    dispatch({
+      type: "SET_PLAYLISTS",
+      payload: playLists,
+    });
+  }
   return (
-    <GlobalContext.Provider value={{ state, setUser, setToken }}>
+    <GlobalContext.Provider value={{ state, setUser, setToken, setPlayLists }}>
       {children}
     </GlobalContext.Provider>
   );

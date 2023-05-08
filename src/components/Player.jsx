@@ -7,6 +7,7 @@ import Footer from "./Footer";
 const Player = () => {
   const context = useContext(GlobalContext);
   console.log("Context", context);
+
   return (
     <>
       <div className="flex">

@@ -10,6 +10,11 @@ export default function GlobalContextProvider(state, action) {
         ...state,
         token: action.payload,
       };
+    case "SET_PLAYLISTS":
+      return {
+        ...state,
+        playLists: action.payload,
+      };
     default:
       return state;
   }
