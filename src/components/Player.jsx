@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import Sidebar from "./Sidebar";
 import Body from "./Body";
-import Footer from "./Footer";
+import AudioControl from "./AudioControl";
 
 const Player = () => {
   const context = useContext(GlobalContext);
@@ -14,7 +14,7 @@ const Player = () => {
         <Sidebar />
         <Body />
       </div>
-      <Footer />
+      <AudioControl />
     </>
   );
 };
