@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import Sidebar from "./Sidebar";
-import Body from "./Body";
 import AudioControl from "./AudioControl";
+import Home from "../pages/Home";
 
 const Player = () => {
   const context = useContext(GlobalContext);
@@ -12,7 +12,7 @@ const Player = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <Body />
+        <Home />
       </div>
       <AudioControl />
     </>

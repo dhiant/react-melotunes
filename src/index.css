@@ -10,8 +10,9 @@
 :root {
   /* body color */
   /* --c-primary: #121212; */
-  --c-primary: #5b5773;
+  --c-primary: #202020;
   /* footer color */
   --c-secondary: #181818;
+  --c-primaryDark: #141414;
   --c-green: #1db954;
 }

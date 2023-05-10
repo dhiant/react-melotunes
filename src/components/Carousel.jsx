@@ -1,0 +1,43 @@
+import { v4 as uuidv4 } from "uuid";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
+import { Navigation } from "swiper";
+// custom css
+import "../styles/SwiperCarousel.css";
+import Card from "../components/Card";
+
+// eslint-disable-next-line react/prop-types
+const Carousel = ({ title, filteredRecentlyPlayedTracks }) => (
+  <>
+    <h1 className="text-2xl font-bold py-5">{title}</h1>
+    <Swiper
+      spaceBetween={20}
+      slidesPerView={"auto"}
+      loop={false}
+      navigation
+      modules={[Navigation]}
+    >
+      {/* eslint-disable-next-line react/prop-types */}
+      {filteredRecentlyPlayedTracks.map((item) => (
+        <SwiperSlide key={uuidv4()}>
+          <Card
+            img={item.track.album.images[1].url}
+            title={item.track.album.name}
+            text={
+              item.track.artists.length === 1
+                ? item.track.artists[0].name
+                : item.track.artists.map((artist) => artist.name + ", ")
+            }
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  </>
+);
+
+export default Carousel;
