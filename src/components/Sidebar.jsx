@@ -12,7 +12,7 @@ const Sidebar = () => {
   const { state } = useContext(GlobalContext);
 
   return (
-    <div className="w-64 h-screen bg-black text-white px-3">
+    <div className="z-10 fixed top-0 bottom-0 w-64 h-screen bg-black text-white px-3">
       <a href="/">
         <img src="/assets/logo.jpg" alt="spotify_logo" className="h-20 p-2.5" />
       </a>

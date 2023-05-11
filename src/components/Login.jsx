@@ -2,7 +2,7 @@ import { loginURL } from "../spotify";
 
 const Login = () => {
   return (
-    <div className="grid place-items-center h-screen bg-primary">
+    <div className="grid place-items-center h-screen bg-primaryDark">
       <img src="/assets/logo.jpg" alt="spotify_logo" className="h-40" />
       <a
         href={loginURL}

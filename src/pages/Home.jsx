@@ -6,8 +6,9 @@ import Carousel from "../components/Carousel";
 const Home = () => {
   const { state } = useContext(GlobalContext);
   const [recentlyPlayedtracks, setRecenltyPlayedTracks] = useState([]);
+  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
 
-  //   filtered track to avoid mapping of repeated(same) tracks
+  // filtered track to avoid mapping of repeated(same) tracks
   const filteredRecentlyPlayedTracks = recentlyPlayedtracks.reduce(
     (acc, current) => {
       const existingTrack = acc.find(
@@ -21,7 +22,7 @@ const Home = () => {
     []
   );
 
-  //   get recently played tracks from spotify
+  // get recently played tracks from spotify
   let getRecentlyPlayedTracks = async () => {
     try {
       const result = await axios.get(
@@ -38,17 +39,41 @@ const Home = () => {
     }
   };
 
+  // get featured playlists
+  let getFeaturedPlaylists = async () => {
+    try {
+      const result = await axios.get(
+        "https://api.spotify.com/v1/browse/featured-playlists",
+        {
+          headers: { Authorization: `Bearer ${state.token}` },
+        }
+      );
+      const data = await result.data;
+      setFeaturedPlaylists(data.playlists.items);
+      console.log("data", data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getRecentlyPlayedTracks();
+    getFeaturedPlaylists();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="flex-1 h-screen p-7 bg-gradient-to-b from-primary to-black text-white">
-      <Carousel
-        title="Recently Played Tracks"
-        filteredRecentlyPlayedTracks={filteredRecentlyPlayedTracks}
-      />
+    <div className="relative w-[calc(100%-256px)] h-screen flex-1 bg-gradient-to-b from-primary to-black text-white">
+      <div className="absolute left-64 w-3/4 p-7">
+        <Carousel
+          title="Recently Played Tracks"
+          filteredRecentlyPlayedTracks={filteredRecentlyPlayedTracks}
+        />
+        <Carousel
+          title="Featured Playlists"
+          featuredPlaylists={featuredPlaylists}
+        />
+      </div>
     </div>
   );
 };

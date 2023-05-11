@@ -27,7 +27,7 @@ const AudioControl = () => {
   };
 
   return (
-    <div className="fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
+    <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
       <div className="flex justify-between">
         <div className="w-60 flex basis-1/3 text-white items-center">
           <img
