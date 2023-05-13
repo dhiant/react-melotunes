@@ -42,6 +42,7 @@ const Carousel = ({
                     ? item.track.artists[0].name
                     : item.track.artists.map((artist) => artist.name + ", ")
                 }
+                previewURL={item.track.preview_url}
               />
             </SwiperSlide>
           ))}

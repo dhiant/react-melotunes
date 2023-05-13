@@ -8,7 +8,8 @@ import {
 import { TbArrowsShuffle, TbHeartFilled, TbMicrophone2 } from "react-icons/tb";
 import { RxLoop } from "react-icons/rx";
 import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const AudioControl = () => {
   const [isPlay, setIsPlay] = useState(false);
@@ -19,12 +20,28 @@ const AudioControl = () => {
   const [setFavourite, setSetFavourite] = useState(false);
   const [setVolume, setSetVolume] = useState(20);
 
+  const { state } = useContext(GlobalContext);
+  const audioRef = useRef(null);
+
   const MAX = 100;
   const getBackgroundSize = () => {
     return {
       backgroundSize: `${(setVolume * 100) / MAX}% 100%`,
     };
   };
+
+  useEffect(() => {
+    if (state.previewURL) {
+      audioRef.current.src = state.previewURL;
+      if (state.playing) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    } else {
+      audioRef.current.pause();
+    }
+  }, [state.previewURL, state.playing]);
 
   return (
     <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
@@ -72,6 +89,7 @@ const AudioControl = () => {
             onClick={() => setEnableShuffle(!enableShuffle)}
           />
           <AiOutlineStepBackward size="24px" fill="#9d9d9d" title="Previous" />
+          <audio ref={audioRef}></audio>
           {isPlay ? (
             <MdPauseCircle
               size="40px"

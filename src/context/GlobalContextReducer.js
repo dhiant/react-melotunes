@@ -15,6 +15,11 @@ export default function GlobalContextProvider(state, action) {
         ...state,
         playLists: action.payload,
       };
+    case "SET_Preview_URL":
+      return {
+        ...state,
+        previewURL: action.payload,
+      };
     default:
       return state;
   }

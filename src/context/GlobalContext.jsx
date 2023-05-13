@@ -4,10 +4,10 @@ import reducer from "./GlobalContextReducer";
 const initialState = {
   user: null,
   playLists: [],
-  playing: false,
+  playing: true,
   item: null,
-  token:
-    "BQD--BO_67xtv46dbQRbbW08JaoK2tiu6PaVf1FDnEj56Kkysf2R0g2xqGwSRXI9pevtVeBObL-dYKyMGEpw9-qX2c77vZVQaMN1dYqNc9AUOsS2WSDDINLY6mCA_8Sj9actfryTI_KhFk2w3hbJ1fR4CHbZfGNCfd_WSEHPV4FN2jHMXlloL0XKyRnuC4ovFv_xlf2IAQnPsT3sQE3jC9jsxhODD_l8iUw",
+  token: null,
+  previewURL: null,
 };
 
 export const GlobalContext = createContext(initialState);
@@ -36,8 +36,24 @@ export const GlobalContextProvider = ({ children }) => {
       payload: playLists,
     });
   }
+
+  function setPreviewURL(previewURL) {
+    dispatch({
+      type: "SET_Preview_URL",
+      payload: previewURL,
+    });
+  }
+
   return (
-    <GlobalContext.Provider value={{ state, setUser, setToken, setPlayLists }}>
+    <GlobalContext.Provider
+      value={{
+        state,
+        setUser,
+        setToken,
+        setPlayLists,
+        setPreviewURL,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );
