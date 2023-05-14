@@ -20,6 +20,11 @@ export default function GlobalContextProvider(state, action) {
         ...state,
         previewURL: action.payload,
       };
+    case "SET_TRACK_DATA":
+      return {
+        ...state,
+        trackData: action.payload,
+      };
     default:
       return state;
   }

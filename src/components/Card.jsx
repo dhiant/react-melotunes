@@ -3,10 +3,11 @@ import { GlobalContext } from "../context/GlobalContext";
 
 // eslint-disable-next-line react/prop-types
 const Card = ({ img, title, text, previewURL }) => {
-  const { setPreviewURL } = useContext(GlobalContext);
+  const { setPreviewURL, setTrackData } = useContext(GlobalContext);
 
   const handleClick = () => {
     setPreviewURL(previewURL);
+    setTrackData({ img, title, text });
   };
 
   return (

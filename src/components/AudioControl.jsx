@@ -21,6 +21,8 @@ const AudioControl = () => {
   const [setVolume, setSetVolume] = useState(20);
 
   const { state } = useContext(GlobalContext);
+  const { img, text, title } = state.trackData;
+
   const audioRef = useRef(null);
 
   const MAX = 100;
@@ -47,16 +49,12 @@ const AudioControl = () => {
     <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
       <div className="flex justify-between">
         <div className="w-60 flex basis-1/3 text-white items-center">
-          <img
-            src="https://i.scdn.co/image/ab67616d000048512bdcb339402ebd78651f09c8"
-            alt="song_picture"
-            className="w-14 h-14 rounded"
-          />
-          <div className="flex flex-col pl-3 w-1/2">
-            <h4 className="text-base font-normal truncate">
-              Best Song of the Year
-            </h4>
-            <p className="text-gray-500 text-sm">Zyan, Sia</p>
+          <img src={img} alt="song_picture" className="w-14 h-14 rounded" />
+          <div className="flex flex-col pl-3">
+            <h4 className="text-base font-normal truncate">{title}</h4>
+            <p className="text-gray-500 text-sm truncate">
+              {text || text.map((item) => item)}
+            </p>
           </div>
           <div className="pl-4 flex gap-x-4">
             {setFavourite ? (

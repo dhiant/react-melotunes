@@ -36,12 +36,13 @@ const Carousel = ({
             <SwiperSlide key={uuidv4()}>
               <Card
                 img={item.track.album.images[1].url}
-                title={item.track.album.name}
-                text={
-                  item.track.artists.length === 1
-                    ? item.track.artists[0].name
-                    : item.track.artists.map((artist) => artist.name + ", ")
-                }
+                title={item.track.name}
+                text={item.track.artists.map((artist, index) => (
+                  <span key={uuidv4()}>
+                    {artist.name}
+                    {index !== item.track.artists.length - 1 && ", "}
+                  </span>
+                ))}
                 previewURL={item.track.preview_url}
               />
             </SwiperSlide>

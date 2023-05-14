@@ -8,6 +8,11 @@ const initialState = {
   item: null,
   token: null,
   previewURL: null,
+  trackData: {
+    img: "https://i.scdn.co/image/ab67616d000048512bdcb339402ebd78651f09c8",
+    text: "Zyan, Sia",
+    title: "Dusk Till Dawn",
+  },
 };
 
 export const GlobalContext = createContext(initialState);
@@ -44,6 +49,14 @@ export const GlobalContextProvider = ({ children }) => {
     });
   }
 
+  // set img, tile, artist(text) of track
+  function setTrackData(obj) {
+    dispatch({
+      type: "SET_TRACK_DATA",
+      payload: obj,
+    });
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -52,6 +65,7 @@ export const GlobalContextProvider = ({ children }) => {
         setToken,
         setPlayLists,
         setPreviewURL,
+        setTrackData,
       }}
     >
       {children}
