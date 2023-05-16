@@ -3,11 +3,19 @@ import { GlobalContext } from "../context/GlobalContext";
 
 // eslint-disable-next-line react/prop-types
 const Card = ({ img, title, text, previewURL }) => {
-  const { setPreviewURL, setTrackData } = useContext(GlobalContext);
+  const { state, setPreviewURL, setTrackData, setPlaying } =
+    useContext(GlobalContext);
 
   const handleClick = () => {
     setPreviewURL(previewURL);
     setTrackData({ img, title, text });
+
+    // if user click same track toggle the audio with play/pause else pause the audio
+    if (previewURL === state.previewURL) {
+      setPlaying(!state.playing);
+    } else {
+      setPlaying(true);
+    }
   };
 
   return (

@@ -57,6 +57,14 @@ export const GlobalContextProvider = ({ children }) => {
     });
   }
 
+  // play/pause audio
+  function setPlaying(boolean) {
+    dispatch({
+      type: "SET_PLAYING",
+      payload: boolean,
+    });
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -66,6 +74,7 @@ export const GlobalContextProvider = ({ children }) => {
         setPlayLists,
         setPreviewURL,
         setTrackData,
+        setPlaying,
       }}
     >
       {children}

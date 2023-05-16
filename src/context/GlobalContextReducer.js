@@ -25,6 +25,11 @@ export default function GlobalContextProvider(state, action) {
         ...state,
         trackData: action.payload,
       };
+    case "SET_PLAYING":
+      return {
+        ...state,
+        playing: action.payload,
+      };
     default:
       return state;
   }

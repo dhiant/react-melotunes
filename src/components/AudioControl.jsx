@@ -12,7 +12,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 
 const AudioControl = () => {
-  const [isPlay, setIsPlay] = useState(false);
   const [isMute, setIsMute] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
   const [enableShuffle, setEnableShuffle] = useState(false);
@@ -20,8 +19,9 @@ const AudioControl = () => {
   const [setFavourite, setSetFavourite] = useState(false);
   const [setVolume, setSetVolume] = useState(20);
 
-  const { state } = useContext(GlobalContext);
+  const { state, setPlaying } = useContext(GlobalContext);
   const { img, text, title } = state.trackData;
+  const isPlaying = state.playing;
 
   const audioRef = useRef(null);
 
@@ -88,16 +88,16 @@ const AudioControl = () => {
           />
           <AiOutlineStepBackward size="24px" fill="#9d9d9d" title="Previous" />
           <audio ref={audioRef}></audio>
-          {isPlay ? (
+          {isPlaying ? (
             <MdPauseCircle
               size="40px"
-              onClick={() => setIsPlay(!isPlay)}
+              onClick={() => setPlaying(!isPlaying)}
               title="Pause"
             />
           ) : (
             <MdPlayCircle
               size="40px"
-              onClick={() => setIsPlay(!isPlay)}
+              onClick={() => setPlaying(!isPlaying)}
               title="Play"
             />
           )}
