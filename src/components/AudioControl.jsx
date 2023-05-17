@@ -17,33 +17,66 @@ const AudioControl = () => {
   const [enableShuffle, setEnableShuffle] = useState(false);
   const [enableRepeat, setEnableRepeat] = useState(false);
   const [setFavourite, setSetFavourite] = useState(false);
-  const [setVolume, setSetVolume] = useState(20);
+  const [setVolume, setSetVolume] = useState(0.12);
+  const [audioCurrentTime, setAudioCurrentTime] = useState(0);
 
   const { state, setPlaying } = useContext(GlobalContext);
-  const { img, text, title } = state.trackData;
-  const isPlaying = state.playing;
+  let { img, text, title } = state.trackData;
+  let isPlaying = state.playing;
 
   const audioRef = useRef(null);
 
-  const MAX = 100;
   const getBackgroundSize = () => {
     return {
-      backgroundSize: `${(setVolume * 100) / MAX}% 100%`,
+      backgroundSize: `${setVolume * 100}% 100%`,
     };
   };
 
-  useEffect(() => {
-    if (state.previewURL) {
-      audioRef.current.src = state.previewURL;
-      if (state.playing) {
-        audioRef.current.play();
-      } else {
-        audioRef.current.pause();
-      }
-    } else {
-      audioRef.current.pause();
+  // adjust volume range
+  const handleVolume = (initialVolume) => {
+    // convert string value to float
+    let volumeInFloat = parseFloat(initialVolume);
+    audioRef.current.volume = volumeInFloat;
+    setSetVolume(volumeInFloat);
+  };
+
+  // play/pause audio
+  const handleAudioPlayPause = () => {
+    if (isPlaying) {
+      setAudioCurrentTime(audioRef.current.currentTime);
     }
-  }, [state.previewURL, state.playing]);
+
+    setPlaying(!isPlaying);
+  };
+
+  useEffect(() => {
+    let audioElement = audioRef.current;
+    audioElement.volume = 0.12;
+
+    if (state.previewURL) {
+      audioElement.src = state.previewURL;
+
+      if (state.playing) {
+        audioElement.currentTime = audioCurrentTime;
+        audioElement.play();
+      } else {
+        audioElement.pause();
+      }
+    }
+
+    const isAudioPlayCompletely = () => {
+      if (audioElement.duration === audioElement.currentTime) {
+        console.log("complete audio");
+        setPlaying(false);
+      }
+    };
+
+    audioElement.addEventListener("timeupdate", isAudioPlayCompletely);
+
+    return () => {
+      audioElement.removeEventListener("timeupdate", isAudioPlayCompletely);
+    };
+  }, [state.previewURL, state.playing, audioCurrentTime, setPlaying]);
 
   return (
     <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
@@ -87,17 +120,17 @@ const AudioControl = () => {
             onClick={() => setEnableShuffle(!enableShuffle)}
           />
           <AiOutlineStepBackward size="24px" fill="#9d9d9d" title="Previous" />
-          <audio ref={audioRef}></audio>
+          <audio ref={audioRef} muted={isMute}></audio>
           {isPlaying ? (
             <MdPauseCircle
               size="40px"
-              onClick={() => setPlaying(!isPlaying)}
+              onClick={handleAudioPlayPause}
               title="Pause"
             />
           ) : (
             <MdPlayCircle
               size="40px"
-              onClick={() => setPlaying(!isPlaying)}
+              onClick={handleAudioPlayPause}
               title="Play"
             />
           )}
@@ -125,7 +158,7 @@ const AudioControl = () => {
             />
           ) : (
             <HiOutlineSpeakerWave
-              size="20px"
+              size="22px"
               title="Mute"
               onClick={() => setIsMute(!isMute)}
             />
@@ -134,9 +167,10 @@ const AudioControl = () => {
             <input
               type="range"
               value={setVolume}
-              onChange={(e) => setSetVolume(e.target.value)}
+              onChange={(e) => handleVolume(e.target.value)}
               min="0"
-              max={MAX}
+              max="1"
+              step="0.0001"
               style={getBackgroundSize()}
               className="accent-[#1db954] w-3/4 h-1 rounded-lg bg-gradient-to-r from-green to-green bg-no-repeat appearance-none cursor-pointer dark:bg-gray-700 "
             />
