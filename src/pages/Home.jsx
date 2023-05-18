@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import axios from "axios";
 import Carousel from "../components/Carousel";
+import CarouselLoader from "../components/CarouselLoader";
 
 const Home = () => {
   const { state } = useContext(GlobalContext);
@@ -50,7 +51,6 @@ const Home = () => {
       );
       const data = await result.data;
       setFeaturedPlaylists(data.playlists.items);
-      console.log("data", data);
     } catch (err) {
       console.log(err);
     }
@@ -63,16 +63,24 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative w-[calc(100%-256px)] h-screen flex-1 bg-gradient-to-b from-primary to-black text-white">
-      <div className="absolute left-64 w-3/4 p-7">
-        <Carousel
-          title="Recently Played Tracks"
-          filteredRecentlyPlayedTracks={filteredRecentlyPlayedTracks}
-        />
-        <Carousel
-          title="Featured Playlists"
-          featuredPlaylists={featuredPlaylists}
-        />
+    <div className="relative h-screen flex-1 bg-gradient-to-b from-primary to-black text-white">
+      <div className="absolute left-64 w-[calc(100%-256px)] overflow-x-hidden p-7">
+        {filteredRecentlyPlayedTracks.length > 0 ? (
+          <Carousel
+            title="Recently Played Tracks"
+            filteredRecentlyPlayedTracks={filteredRecentlyPlayedTracks}
+          />
+        ) : (
+          <CarouselLoader />
+        )}
+        {featuredPlaylists.length > 0 ? (
+          <Carousel
+            title="Featured Playlists"
+            featuredPlaylists={featuredPlaylists}
+          />
+        ) : (
+          <CarouselLoader />
+        )}
       </div>
     </div>
   );

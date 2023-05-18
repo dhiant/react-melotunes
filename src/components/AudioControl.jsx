@@ -10,6 +10,7 @@ import { RxLoop } from "react-icons/rx";
 import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import AudioControlLoader from "./AudioControlLoader";
 
 const AudioControl = () => {
   const [isMute, setIsMute] = useState(false);
@@ -66,7 +67,6 @@ const AudioControl = () => {
 
     const isAudioPlayCompletely = () => {
       if (audioElement.duration === audioElement.currentTime) {
-        console.log("complete audio");
         setPlaying(false);
       }
     };
@@ -82,36 +82,45 @@ const AudioControl = () => {
     <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
       <div className="flex justify-between">
         <div className="w-60 flex basis-1/3 text-white items-center">
-          <img src={img} alt="song_picture" className="w-14 h-14 rounded" />
-          <div className="flex flex-col pl-3">
-            <h4 className="text-base font-normal truncate">{title}</h4>
-            <p className="text-gray-500 text-sm truncate">
-              {text || text.map((item) => item)}
-            </p>
-          </div>
-          <div className="pl-4 flex gap-x-4">
-            {setFavourite ? (
-              <TbHeartFilled
-                color="#1db954"
-                size="22px"
-                title="Save to Your Library"
-                onClick={() => setSetFavourite(!setFavourite)}
-              />
-            ) : (
-              <MdOutlineFavoriteBorder
-                fill="grey"
-                size="22px"
-                title="Save to Your Library"
-                onClick={() => setSetFavourite(!setFavourite)}
-              />
-            )}
-            <MdOutlinePictureInPictureAlt
-              fill="grey"
-              size="20px"
-              title="Picture in picture"
-            />
-          </div>
+          {img || title || text ? (
+            <>
+              <img src={img} alt="song_picture" className="w-14 h-14 rounded" />
+              <div className="flex flex-col pl-3">
+                <h4 className="text-base font-normal truncate">{title}</h4>
+                <p className="text-gray-500 text-sm truncate">
+                  {text || text.map((item) => item)}
+                </p>
+              </div>
+              <div className="pl-4 flex gap-x-4">
+                {setFavourite ? (
+                  <TbHeartFilled
+                    color="#1db954"
+                    size="22px"
+                    title="Save to Your Library"
+                    onClick={() => setSetFavourite(!setFavourite)}
+                  />
+                ) : (
+                  <MdOutlineFavoriteBorder
+                    fill="grey"
+                    size="22px"
+                    title="Save to Your Library"
+                    onClick={() => setSetFavourite(!setFavourite)}
+                  />
+                )}
+                <MdOutlinePictureInPictureAlt
+                  fill="grey"
+                  size="20px"
+                  title="Picture in picture"
+                />
+              </div>
+            </>
+          ) : (
+            <div className="pl-10">
+              <AudioControlLoader />
+            </div>
+          )}
         </div>
+
         <div className="text-white flex basis-1 justify-center items-center gap-x-4">
           <TbArrowsShuffle
             size="20px"
