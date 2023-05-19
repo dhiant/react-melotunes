@@ -22,7 +22,7 @@ const Carousel = ({
 }) => {
   return (
     <>
-      <h1 className="text-2xl font-bold py-5">{title}</h1>
+      <h1 className="text-xl sm:text-2xl font-bold py-5">{title}</h1>
       <Swiper
         spaceBetween={20}
         slidesPerView={"auto"}
@@ -52,6 +52,7 @@ const Carousel = ({
           featuredPlaylists.map((item) => (
             <SwiperSlide key={uuidv4()}>
               <Card
+                tracksHref={item.tracks.href}
                 img={item.images[0].url}
                 title={item.name}
                 text={item.description}

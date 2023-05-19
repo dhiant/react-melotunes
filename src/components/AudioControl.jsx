@@ -79,9 +79,9 @@ const AudioControl = () => {
   }, [state.previewURL, state.playing, audioCurrentTime, setPlaying]);
 
   return (
-    <div className="z-10 fixed bottom-0 w-full h-24 p-5 bg-secondary border-t-2 border-[#282828]">
-      <div className="flex justify-between">
-        <div className="w-60 flex basis-1/3 text-white items-center">
+    <div className="z-10 fixed bottom-0 w-full h-20 sm:h-24 p-5 bg-secondary border-t-2 border-[#282828]">
+      <div className="flex justify-between gap-x-4">
+        <div className="w-60 md:max-w-full truncate hidden sm:flex basis-1/3 text-white items-center">
           {img || title || text ? (
             <>
               <img src={img} alt="song_picture" className="w-14 h-14 rounded" />
@@ -121,7 +121,7 @@ const AudioControl = () => {
           )}
         </div>
 
-        <div className="text-white flex basis-1 justify-center items-center gap-x-4">
+        <div className="flex-1 text-white flex basis-1 justify-center items-center gap-x-4">
           <TbArrowsShuffle
             size="20px"
             title="Enable Shuffle"
@@ -151,7 +151,7 @@ const AudioControl = () => {
             onClick={() => setEnableRepeat(!enableRepeat)}
           />
         </div>
-        <div className="w-fit py-4 text-white flex items-center basis-1/3 gap-x-4 justify-end">
+        <div className="w-fit py-4 text-white hidden sm:flex items-center basis-1/3 gap-x-4 justify-end">
           <TbMicrophone2
             size="22px"
             stroke={showLyrics ? "#1db954" : "grey"}

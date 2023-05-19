@@ -64,7 +64,7 @@ const Home = () => {
 
   return (
     <div className="relative h-screen flex-1 bg-gradient-to-b from-primary to-black text-white">
-      <div className="absolute left-64 w-[calc(100%-256px)] overflow-x-hidden p-7">
+      <div className="sm:absolute left-64 sm:w-[calc(100%-256px)] overflow-x-hidden p-7">
         {filteredRecentlyPlayedTracks.length > 0 ? (
           <Carousel
             title="Recently Played Tracks"
