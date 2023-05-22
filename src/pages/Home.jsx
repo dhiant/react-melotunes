@@ -1,27 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import axios from "axios";
 import Carousel from "../components/Carousel";
 import CarouselLoader from "../components/CarouselLoader";
 
 const Home = () => {
-  const { state } = useContext(GlobalContext);
-  const [recentlyPlayedtracks, setRecenltyPlayedTracks] = useState([]);
-  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
+  const { state, setRecentlyPlayedTracks, setFeaturedPlaylists } =
+    useContext(GlobalContext);
 
-  // filtered track to avoid mapping of repeated(same) tracks
-  const filteredRecentlyPlayedTracks = recentlyPlayedtracks.reduce(
-    (acc, current) => {
-      const existingTrack = acc.find(
-        (obj) => obj.track.album.name === current.track.album.name
-      );
-      if (!existingTrack) {
-        acc.push(current);
-      }
-      return acc;
-    },
-    []
-  );
+  const { recentlyPlayedTracks, featuredPlaylists } = state;
 
   // get recently played tracks from spotify
   let getRecentlyPlayedTracks = async () => {
@@ -34,7 +21,7 @@ const Home = () => {
       );
       let data = await result.data;
       let allTracks = data.items;
-      setRecenltyPlayedTracks(allTracks);
+      setRecentlyPlayedTracks(allTracks);
     } catch (err) {
       console.log(err);
     }
@@ -59,21 +46,22 @@ const Home = () => {
   useEffect(() => {
     getRecentlyPlayedTracks();
     getFeaturedPlaylists();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="relative h-screen flex-1 bg-gradient-to-b from-primary to-black text-white">
       <div className="sm:absolute left-64 sm:w-[calc(100%-256px)] overflow-x-hidden p-7">
-        {filteredRecentlyPlayedTracks.length > 0 ? (
+        {recentlyPlayedTracks && recentlyPlayedTracks.length > 0 ? (
           <Carousel
             title="Recently Played Tracks"
-            filteredRecentlyPlayedTracks={filteredRecentlyPlayedTracks}
+            recentlyPlayedTracks={recentlyPlayedTracks}
           />
         ) : (
           <CarouselLoader />
         )}
-        {featuredPlaylists.length > 0 ? (
+        {featuredPlaylists && featuredPlaylists.length > 0 ? (
           <Carousel
             title="Featured Playlists"
             featuredPlaylists={featuredPlaylists}

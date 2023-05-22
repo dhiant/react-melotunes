@@ -11,6 +11,7 @@ import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import AudioControlLoader from "./AudioControlLoader";
+import { v4 as uuidv4 } from "uuid";
 
 const AudioControl = () => {
   const [isMute, setIsMute] = useState(false);
@@ -21,11 +22,45 @@ const AudioControl = () => {
   const [setVolume, setSetVolume] = useState(0.12);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
 
-  const { state, setPlaying } = useContext(GlobalContext);
-  let { img, text, title } = state.trackData;
-  let isPlaying = state.playing;
+  const { state, setPlaying, setTrackIndex } = useContext(GlobalContext);
+  const { playing, recentlyPlayedTracks, featuredPlaylists, trackIndex } =
+    state;
+
+  const { category, index } = trackIndex;
+
+  let img, text, title, previewURL;
+
+  if (recentlyPlayedTracks && category === "recently played") {
+    img = recentlyPlayedTracks[index].track.album.images[1].url;
+    text = recentlyPlayedTracks[index].track.artists.map((artist, index) => (
+      <span key={uuidv4()}>
+        {artist.name}
+        {index !== artist.length - 1 && ", "}
+      </span>
+    ));
+    title = recentlyPlayedTracks[index].track.name;
+    previewURL = recentlyPlayedTracks[index].track.preview_url;
+  } else if (featuredPlaylists && category === "featured playlists") {
+    img = featuredPlaylists[index].images[0].url;
+    text = featuredPlaylists[index].description;
+    title = featuredPlaylists[index].name;
+    //  previewURL = featuredPlaylists[index].track.preview_url;
+  }
 
   const audioRef = useRef(null);
+
+  // play previous/next track
+  const handleTrackIndex = (direction) => {
+    if (direction === "next") {
+      if (trackIndex < recentlyPlayedTracks.length - 1) {
+        setTrackIndex(trackIndex + 1);
+      }
+    } else if (direction === "prev") {
+      if (trackIndex > 0) {
+        setTrackIndex(trackIndex - 1);
+      }
+    }
+  };
 
   const getBackgroundSize = () => {
     return {
@@ -43,21 +78,21 @@ const AudioControl = () => {
 
   // play/pause audio
   const handleAudioPlayPause = () => {
-    if (isPlaying) {
+    if (playing) {
       setAudioCurrentTime(audioRef.current.currentTime);
     }
 
-    setPlaying(!isPlaying);
+    setPlaying(!playing);
   };
 
   useEffect(() => {
     let audioElement = audioRef.current;
     audioElement.volume = 0.12;
 
-    if (state.previewURL) {
-      audioElement.src = state.previewURL;
+    if (previewURL) {
+      audioElement.src = previewURL;
 
-      if (state.playing) {
+      if (playing) {
         audioElement.currentTime = audioCurrentTime;
         audioElement.play();
       } else {
@@ -76,7 +111,7 @@ const AudioControl = () => {
     return () => {
       audioElement.removeEventListener("timeupdate", isAudioPlayCompletely);
     };
-  }, [state.previewURL, state.playing, audioCurrentTime, setPlaying]);
+  }, [playing, previewURL, audioCurrentTime, setPlaying]);
 
   return (
     <div className="z-10 fixed bottom-0 w-full h-20 sm:h-24 p-5 bg-secondary border-t-2 border-[#282828]">
@@ -128,9 +163,14 @@ const AudioControl = () => {
             stroke={enableShuffle ? "#1db954" : "grey"}
             onClick={() => setEnableShuffle(!enableShuffle)}
           />
-          <AiOutlineStepBackward size="24px" fill="#9d9d9d" title="Previous" />
+          <AiOutlineStepBackward
+            size="24px"
+            fill="#9d9d9d"
+            title="Previous"
+            onClick={() => handleTrackIndex("prev")}
+          />
           <audio ref={audioRef} muted={isMute}></audio>
-          {isPlaying ? (
+          {playing ? (
             <MdPauseCircle
               size="40px"
               onClick={handleAudioPlayPause}
@@ -143,7 +183,12 @@ const AudioControl = () => {
               title="Play"
             />
           )}
-          <AiOutlineStepForward size="24px" fill="#9d9d9d" title="Next" />
+          <AiOutlineStepForward
+            size="24px"
+            fill="#9d9d9d"
+            title="Next"
+            onClick={() => handleTrackIndex("next")}
+          />
           <RxLoop
             size="20px"
             title="Enable Repeat"

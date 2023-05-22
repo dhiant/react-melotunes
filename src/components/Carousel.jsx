@@ -16,10 +16,29 @@ const Carousel = ({
   // eslint-disable-next-line react/prop-types
   title,
   // eslint-disable-next-line react/prop-types
-  filteredRecentlyPlayedTracks,
+  recentlyPlayedTracks,
   // eslint-disable-next-line react/prop-types
   featuredPlaylists,
 }) => {
+  let filteredRecentlyPlayedTracks;
+
+  if (recentlyPlayedTracks) {
+    // filtered track to avoid mapping of repeated(same) tracks
+    // eslint-disable-next-line react/prop-types
+    filteredRecentlyPlayedTracks = recentlyPlayedTracks.reduce(
+      (acc, current) => {
+        const existingTrack = acc.find(
+          (obj) => obj.track.album.name === current.track.album.name
+        );
+        if (!existingTrack) {
+          acc.push(current);
+        }
+        return acc;
+      },
+      []
+    );
+  }
+
   return (
     <>
       <h1 className="text-xl sm:text-2xl font-bold py-5">{title}</h1>
@@ -32,9 +51,10 @@ const Carousel = ({
       >
         {filteredRecentlyPlayedTracks &&
           // eslint-disable-next-line react/prop-types
-          filteredRecentlyPlayedTracks.map((item) => (
+          filteredRecentlyPlayedTracks.map((item, index) => (
             <SwiperSlide key={uuidv4()}>
               <Card
+                index={index}
                 img={item.track.album.images[1].url}
                 title={item.track.name}
                 text={item.track.artists.map((artist, index) => (
@@ -43,19 +63,20 @@ const Carousel = ({
                     {index !== item.track.artists.length - 1 && ", "}
                   </span>
                 ))}
-                previewURL={item.track.preview_url}
+                category="recently played"
               />
             </SwiperSlide>
           ))}
         {featuredPlaylists &&
           // eslint-disable-next-line react/prop-types
-          featuredPlaylists.map((item) => (
+          featuredPlaylists.map((item, index) => (
             <SwiperSlide key={uuidv4()}>
               <Card
-                tracksHref={item.tracks.href}
+                index={index}
                 img={item.images[0].url}
                 title={item.name}
                 text={item.description}
+                category="featured playlists"
               />
             </SwiperSlide>
           ))}

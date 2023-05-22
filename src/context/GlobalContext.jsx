@@ -4,14 +4,13 @@ import reducer from "./GlobalContextReducer";
 const initialState = {
   user: null,
   playLists: [],
-  playing: true,
-  item: null,
+  playing: false,
+  recentlyPlayedTracks: null,
+  featuredPlaylists: null,
   token: null,
-  previewURL: null,
-  trackData: {
-    img: "https://i.scdn.co/image/ab67616d000048512bdcb339402ebd78651f09c8",
-    text: "Zyan, Sia",
-    title: "Dusk Till Dawn",
+  trackIndex: {
+    category: "recently played",
+    index: 0,
   },
 };
 
@@ -42,26 +41,32 @@ export const GlobalContextProvider = ({ children }) => {
     });
   }
 
-  function setPreviewURL(previewURL) {
-    dispatch({
-      type: "SET_Preview_URL",
-      payload: previewURL,
-    });
-  }
-
-  // set img, tile, artist(text) of track
-  function setTrackData(obj) {
-    dispatch({
-      type: "SET_TRACK_DATA",
-      payload: obj,
-    });
-  }
-
   // play/pause audio
   function setPlaying(boolean) {
     dispatch({
       type: "SET_PLAYING",
       payload: boolean,
+    });
+  }
+
+  function setRecentlyPlayedTracks(arr) {
+    dispatch({
+      type: "RECENTLY_PLAYED_TRACKS",
+      payload: arr,
+    });
+  }
+
+  function setFeaturedPlaylists(arr) {
+    dispatch({
+      type: "FEATURED_PLAYLISTS",
+      payload: arr,
+    });
+  }
+
+  function setTrackIndex(obj) {
+    dispatch({
+      type: "SET_TRACK_INDEX",
+      payload: obj,
     });
   }
 
@@ -72,9 +77,10 @@ export const GlobalContextProvider = ({ children }) => {
         setUser,
         setToken,
         setPlayLists,
-        setPreviewURL,
-        setTrackData,
         setPlaying,
+        setRecentlyPlayedTracks,
+        setFeaturedPlaylists,
+        setTrackIndex,
       }}
     >
       {children}
