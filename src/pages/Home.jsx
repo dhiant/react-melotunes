@@ -21,7 +21,17 @@ const Home = () => {
       );
       let data = await result.data;
       let allTracks = data.items;
-      setRecentlyPlayedTracks(allTracks);
+      let _filteredRecentlyPlayedTracks = allTracks.reduce((acc, current) => {
+        const existingTrack = acc.find(
+          (obj) => obj.track.album.name === current.track.album.name
+        );
+        if (!existingTrack) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+      // send data to the context only after filtering repeated tracks
+      setRecentlyPlayedTracks(_filteredRecentlyPlayedTracks);
     } catch (err) {
       console.log(err);
     }
@@ -56,7 +66,7 @@ const Home = () => {
         {recentlyPlayedTracks && recentlyPlayedTracks.length > 0 ? (
           <Carousel
             title="Recently Played Tracks"
-            recentlyPlayedTracks={recentlyPlayedTracks}
+            filteredRecentlyPlayedTracks={recentlyPlayedTracks}
           />
         ) : (
           <CarouselLoader />

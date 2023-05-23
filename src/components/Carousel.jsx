@@ -16,29 +16,10 @@ const Carousel = ({
   // eslint-disable-next-line react/prop-types
   title,
   // eslint-disable-next-line react/prop-types
-  recentlyPlayedTracks,
+  filteredRecentlyPlayedTracks,
   // eslint-disable-next-line react/prop-types
   featuredPlaylists,
 }) => {
-  let filteredRecentlyPlayedTracks;
-
-  if (recentlyPlayedTracks) {
-    // filtered track to avoid mapping of repeated(same) tracks
-    // eslint-disable-next-line react/prop-types
-    filteredRecentlyPlayedTracks = recentlyPlayedTracks.reduce(
-      (acc, current) => {
-        const existingTrack = acc.find(
-          (obj) => obj.track.album.name === current.track.album.name
-        );
-        if (!existingTrack) {
-          acc.push(current);
-        }
-        return acc;
-      },
-      []
-    );
-  }
-
   return (
     <>
       <h1 className="text-xl sm:text-2xl font-bold py-5">{title}</h1>

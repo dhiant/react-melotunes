@@ -51,13 +51,25 @@ const AudioControl = () => {
 
   // play previous/next track
   const handleTrackIndex = (direction) => {
-    if (direction === "next") {
-      if (trackIndex < recentlyPlayedTracks.length - 1) {
-        setTrackIndex(trackIndex + 1);
+    if (category === "recently played") {
+      if (direction === "next") {
+        if (index < recentlyPlayedTracks.length - 1) {
+          setTrackIndex({ category: "recently played", index: index + 1 });
+        }
+      } else if (direction === "prev") {
+        if (index > 0) {
+          setTrackIndex({ category: "recently played", index: index - 1 });
+        }
       }
-    } else if (direction === "prev") {
-      if (trackIndex > 0) {
-        setTrackIndex(trackIndex - 1);
+    } else if (category === "featured playlists") {
+      if (direction === "next") {
+        if (index < featuredPlaylists.length - 1) {
+          setTrackIndex({ category: "featured playlists", index: index + 1 });
+        }
+      } else if (direction === "prev") {
+        if (index > 0) {
+          setTrackIndex({ category: "featured playlists", index: index - 1 });
+        }
       }
     }
   };
