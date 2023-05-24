@@ -7,16 +7,19 @@ const CarouselLoader = () => {
   let height = "300";
   let rectData = [
     { x: 30, y: 60 },
-    { x: 257, y: 60 },
-    { x: 484, y: 60 },
-    { x: 711, y: 60 },
-    { x: 938, y: 60 },
-    { x: 1165, y: 60 },
-    { x: 1392, y: 60 },
-    { x: 1619, y: 60 },
-    { x: 1846, y: 60 },
-    { x: 2073, y: 60 },
-    { x: 2300, y: 60 },
+    { x: 228, y: 60 },
+    { x: 426, y: 60 },
+    { x: 624, y: 60 },
+    { x: 822, y: 60 },
+    { x: 1020, y: 60 },
+    { x: 1218, y: 60 },
+    { x: 1416, y: 60 },
+    { x: 1614, y: 60 },
+    { x: 1812, y: 60 },
+    { x: 2010, y: 60 },
+    { x: 2208, y: 60 },
+    { x: 2406, y: 60 },
+    { x: 2604, y: 60 },
   ];
 
   return (
@@ -28,25 +31,25 @@ const CarouselLoader = () => {
       backgroundColor="#2e2e2e"
       foregroundColor="#4f4f4f"
     >
-      <rect x="30" y="20" rx="0" ry="0" width="130" height="23" />
+      <rect x="5" y="20" rx="0" ry="0" width="130" height="23" />
 
       {rectData.map((rect) => (
         <React.Fragment key={uuidv4()}>
-          <rect x={rect.x} y={rect.y} rx="0" ry="0" width="200" height="120" />
+          <rect x={rect.x} y={rect.y} rx="0" ry="0" width="175" height="130" />
           <rect
             x={rect.x}
-            y={rect.y + 129}
+            y={rect.y + 139}
             rx="0"
             ry="0"
-            width="200"
+            width="175"
             height="15"
           />
           <rect
             x={rect.x}
-            y={rect.y + 151}
+            y={rect.y + 161}
             rx="0"
             ry="0"
-            width="140"
+            width="120"
             height="15"
           />
         </React.Fragment>
