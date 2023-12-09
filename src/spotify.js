@@ -4,7 +4,7 @@ const client_id = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const authEndpoint = "https://accounts.spotify.com/authorize";
 
 // this is the URL where users'll be redirected to when authorization completes
-const redirectURI = "http://localhost:5173/";
+const redirectURI = "https://melotunes.netlify.app/";
 
 // scopes are basically the information Spotify user choose to share
 const scopes = [
